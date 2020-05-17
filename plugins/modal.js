@@ -10,7 +10,7 @@ function _createModal(options) {  // нижнее подчеркивание _ �
                     <div class="modal-title">${options.title || 'Окно'}</div>
                     ${options.closable ? '<span class="modal-close" data-close="true">&times;</span>' : ''}
                </div>
-               <div class="modal-body">
+               <div class="modal-body" data-content>
                    ${options.content || ''} 
                </div>
 
@@ -32,9 +32,14 @@ $modal = function (options) {
      const ANIMATION_SPEED = 200 // приватная константа анимации 
      const $modal = _createModal(options) // заношу результат работы функции // $modal ---> дом node element
      let closing = false // переменная для предотвращения не корректной логики работы (если вызвали в момент метода close метод open)
+     let destroyed = false // для защиты 
 
      const modal = { // создаем отдельный объект 
           open() { // метод 
+               if (destroyed) { // если destroyed true тогда не запускаем метод open()
+                    return console.log('Modal is destroyed')
+               }
+
                !closing && $modal.classList.add('open') // если с closing в true тогда не добавляем класс open
           },
           close() {// метод 
@@ -47,16 +52,27 @@ $modal = function (options) {
                }, ANIMATION_SPEED) // по завершению анимации 200 мс
           }
      }
-     // добавляем прослушиватель на нажатие кнопки
-     $modal.addEventListener('click', event => {
+
+     const listener = event => {
           //console.log('clicked', event.target) //отображение в консоли нажатого элемента //  у event.target присутствует объект dataset где хранится набор всех дата атрибутов 
           //console.log('clicked', event.target.dataset.close) //отображение в консоли нажатого элемента c отображением ключа close
           if (event.target.dataset.close) { // если присутствует атрибут data-close тогда 
                modal.close() // вызываем метод close() 
           }
-     })
+     }
+     // добавляем прослушиватель на нажатие кнопки
+     $modal.addEventListener('click', listener)
 
-     return modal // на выходе возвращаю просто этот объект 
+     return Object.assign(modal, { // для работы просто с объектами (добавляем методы для объекта modal, расширяя его) 
+          destroy() {
+               $modal.parentNode.removeChild($modal) // удаление domNode из дом дерева 
+               $modal.removeEventListener('click', listener) // удаляем слушатель события listener
+               destroyed = true // если удалили окно для защиты 
+          },
+          setConten(html) { // метод изменения контента  в окне
+               $modal.querySelector('[data-content]').innerHTML = html
+          }
+     })  // на выходе возвращаю просто этот объект 
 }
 
 
