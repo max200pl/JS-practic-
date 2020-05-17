@@ -1,6 +1,6 @@
-//function modal(){}
-function _createModal(options) {  // нижнее подчеркивание _ обоз. что некая системная функция (приватная)
-     const modal = document.createElement('div')
+//выносим функцию  _createModal с функции на примере замыкания 
+function _createModal(options) {  // нижнее подчеркивание _ обоз. что некая системная функция (приватная) которая не должна быть вызвана отдельно 
+     const modal = document.createElement('div') // основной div
      modal.classList.add('vmodal')
      modal.insertAdjacentHTML('afterbegin', `
      <div class="modal-overlay">
@@ -21,9 +21,10 @@ function _createModal(options) {  // нижнее подчеркивание _ �
           </div>
      </div>
 `)
-     document.body.appendChild(modal)
+     document.body.appendChild(modal)// помещаем модальное окно в дом дерево 
      return modal //возвращаем instance (пример) 
 }
+//получение параметров (options) для работы открытия и закрытия модального окна 
 
 $modal = function (options) {
      // Практическое применение замыкания 
@@ -31,7 +32,7 @@ $modal = function (options) {
      const $modal = _createModal(options) // заношу результат работы функции // $modal ---> дом node element
 
 
-     return {
+     return { // возвращаем методы для взаимодействия с instance
           open() { // метод 
                $modal.classList.add('open')
           },
