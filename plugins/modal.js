@@ -1,8 +1,49 @@
+
+/** Нет стандартной функции добавления элементов 
+ *  добавляем метод .appendAfter
+ *  Практикуем работу с прототипами 
+ */
+Element.prototype.appendAfter = function (element) {
+     element.parentNode.insertBefore(this, element.nextSibling) // this это footer 
+}
+
+function noop() { }
+
+/**
+ * Функция формирования кнопок footer
+ * 
+ */
+function _createModalFooter(buttons = []) { // по умолчанию пустой массив
+     /* Будем работать с конкретными node */
+     if (buttons.length === 0) { // если массив по умолчанию пуст 
+          return document.createElement('div') // создаем div
+     }
+     /*Если присутствует начинаем формировать*/
+     const wrap = document.createElement('div') // создаем кореневой элемент wrap
+     wrap.classList.add('modal-footer') // добавляем класс 
+
+     /*Добавляем через цикл кнопки в footer */
+     buttons.forEach(btn => {// btn это один с объектов массива footerButtons index.js
+          const $btn = document.createElement('button') // создаем теги кнопок 
+          $btn.textContent = btn.text // .text это ключ в массиве footerButtons
+          $btn.classList.add('btn') // создаем класс btn
+          $btn.classList.add(`btn-${btn.type || 'secondary'}`) // к классу btn-.type --->  btn-primary
+          $btn.onclick = btn.handler || noop // индивидуальный обработчик события для каждой кнопки // noop простая функция что указана выше
+
+          wrap.appendChild($btn) // помещаем в wrap кнопки 
+     })
+
+     return wrap
+}
+
 //выносим функцию  _createModal с функции на примере замыкания 
 function _createModal(options) {  // нижнее подчеркивание _ обоз. что некая системная функция (приватная) которая не должна быть вызвана отдельно 
      const DEFAULT_WIDTH = '600px'
      const modal = document.createElement('div') // основной div
      modal.classList.add('vmodal')
+     /**
+      * Производим формирование верстки 
+      */
      modal.insertAdjacentHTML('afterbegin', `
      <div class="modal-overlay" data-close="true">
           <div class="modal-window" style="width: ${options.width || DEFAULT_WIDTH}" >
@@ -13,16 +54,15 @@ function _createModal(options) {  // нижнее подчеркивание _ �
                <div class="modal-body" data-content>
                    ${options.content || ''} 
                </div>
-
-               <div class="modal-footer">
-                    <button>Ok</button>
-                    <button>Cancel</button>
-               </div>
           </div>
      </div>
 `)
+     const footer = _createModalFooter(options.footerButtons) // передаем параметр с объекта $modal --->  footerButtons
+
+     footer.appendAfter(modal.querySelector('[data-content]')) // помещаем ниже modal-body footer по атрибуту [data-content]
+
      document.body.appendChild(modal)// помещаем модальное окно в дом дерево 
-     return modal //возвращаем instance (пример) 
+     return modal //возвращаем instance
 }
 
 //получение параметров (options) для работы открытия и закрытия модального окна 
