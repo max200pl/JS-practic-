@@ -53,7 +53,7 @@ function _createModal(options) {  // нижнее подчеркивание _ �
                </div>
                <div class="modal-body" data-content>
                    ${options.content || ''} 
-               </div>
+               </div> 
           </div>
      </div>
 `)
@@ -109,8 +109,8 @@ $modal = function (options) {
                $modal.removeEventListener('click', listener) // удаляем слушатель события listener
                destroyed = true // если удалили окно для защиты 
           },
-          setConten(html) { // метод изменения контента  в окне
-               $modal.querySelector('[data-content]').innerHTML = html
+          setContent(html) { // метод изменения контента  в окне
+               $modal.querySelector('[data-content]').innerHTML = html // изменяем дочерний элемент id [data-content]
           }
      })  // на выходе возвращаю просто этот объект 
 }

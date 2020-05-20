@@ -1,27 +1,64 @@
-// передаем базовые опции в объекте (options)
+const prices = [ // глобальный объект 
+     { id: 1, title: 'first', price: 20, img: 'https://picsum.photos/200/300' },
+     { id: 2, title: 'second', price: 30, img: 'https://picsum.photos/200/300?grayscale' },
+     { id: 3, title: 'third', price: 40, img: 'https://picsum.photos/seed/picsum/200/300' }
+]
 
-const modal = $modal({
+
+// функция toHTML которая берет параметр price
+// функция toHTML возвращает строку
+// метод toHTML берет объект price и преобразует в строку 
+const toHTML = price => ` 
+     <div class="col" >
+          <div class="card" style="width: 18rem;">     
+               <img class="card-img-top" style="max-width: 100%; height: auto;" src="${price.img}" alt="${price.title}">
+               <div class="card-body">
+                    <h5 class="card-title">${price.title}</h5>
+                    <a href="#" class="btn btn-primary" data-btn="price" data-id="${price.id}">See price</a>
+                    <a href="#" class="btn btn-danger">Remove price</a>
+               </div>
+          </div>
+     </div>
+`
+
+function render() { // Динамически на основе массива выводим список карточек
+     const html = prices.map(toHTML).join('') //преобразуем каждый prices к строке --> (получем массив строк .map(toHTML)) и преобразуем в одну строку (.join()) //(prices => toHTML(price)) -- получаем массив строк;
+     document.querySelector('#price').innerHTML = html // выбираем по id и изменяем содержимое ---> .innerHTML (удаляет всё содержимое элемента и заменяет его на узлы)
+}
+
+render() //вызываем функцию 
+
+
+// передаем базовые опции в объекте (options)
+const priceModal = $modal({
      //параметризация модального окна
-     title: 'max200pl modal',
+     title: 'Цена на товар',
      closable: true,
-     content:
-          `
-     <h4>Modal is working</h4>
-     <p>Lorem ipsum dolor sit</p>
-     `,
      width: '400px',
      footerButtons: [
           {
-               text: 'Ok', type: 'primary', handler() {
-                    console.log('Primary btm clicked')
-                    modal.close() // закрытие модального окна 
+               text: 'Close', type: 'primary', handler() {
+                    priceModal.close() // закрытие модального окна
                }
-          },
-          {
-               text: 'Cancel', type: 'danger', handler() {
-                    console.log('Danger btm clicked')
-                    modal.close() // закрытие модального окна 
-               }
-          },
+          }
      ]
+})
+
+/**
+ * Открытие модального окна при клике на data-btn
+ */
+document.addEventListener('click', event => {
+     event.preventDefault()
+     const btnType = event.target.dataset.btn //получение атрибута data-btn
+     const id = +event.target.dataset.id // получение атрибута data-id// +event... преобразуем к числу 
+
+     if (btnType === 'price') {
+          const price = prices.find(f => f.id === id)
+
+          priceModal.setContent(`
+               <p>Price for ${price.title}: <strong>${price.price}$</strong></p>
+          `)
+          priceModal.open()
+          //console.log(id, price)
+     }
 })
