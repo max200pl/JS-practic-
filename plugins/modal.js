@@ -89,6 +89,7 @@ $modal = function (options) {
                setTimeout(() => {
                     $modal.classList.remove('hide') // удаляем  hide
                     closing = false // защита 
+                    // реализация хука когда окно закрыто 
                     if (typeof options.onClose === 'function') {
                          options.onClose()
                     }

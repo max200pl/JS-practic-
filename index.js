@@ -1,4 +1,4 @@
-const prices = [ // глобальный объект 
+let prices = [ // глобальный объект 
      { id: 1, title: 'first', price: 20, img: 'https://picsum.photos/200/300' },
      { id: 2, title: 'second', price: 30, img: 'https://picsum.photos/200/300?grayscale' },
      { id: 3, title: 'third', price: 40, img: 'https://picsum.photos/seed/picsum/200/300' }
@@ -52,7 +52,7 @@ document.addEventListener('click', event => {
      event.preventDefault()
      const btnType = event.target.dataset.btn //получение атрибута data-btn
      const id = +event.target.dataset.id // получение атрибута data-id// +event... преобразуем к числу 
-     const price = prices.find(f => f.id === id)
+     const price = prices.find(f => f.id === id) //перебираем по id
 
      if (btnType === 'price') {
           priceModal.setContent(`
@@ -61,12 +61,14 @@ document.addEventListener('click', event => {
           priceModal.open()
           //console.log(id, price)
      } else if (btnType === 'remove') {
-          $.confirm({
-               title: 'You sure?',
+          $.confirm({ // обращаемся к плагину  $.confirm
+               title: 'You sure?', // передаем параметры 
                content: `<p>You deleted this price: <strong>${price.title}</strong></p>`
-          }).then(() => {
-               console.log('REMOVE')
-          }).catch(() => {
+          }).then(() => { // (связано с promise) если попадаем в метод .then то тогда можем удалить элемент 
+               //console.log('REMOVE')
+               prices = prices.filter(f => f.id !== id) // переопределяем массив для того чтобы удалить элемент по id удаляем элемент с массива
+               render()
+          }).catch(() => { // (связано с promise) отклонения обещания
                console.log('CANCEL')
           })
      }
