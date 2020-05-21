@@ -89,6 +89,9 @@ $modal = function (options) {
                setTimeout(() => {
                     $modal.classList.remove('hide') // удаляем  hide
                     closing = false // защита 
+                    if (typeof options.onClose === 'function') {
+                         options.onClose()
+                    }
                }, ANIMATION_SPEED) // по завершению анимации 200 мс
           }
      }

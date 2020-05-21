@@ -44,24 +44,6 @@ const priceModal = $modal({
      ]
 })
 
-const confirmModal = $modal({
-     //параметризация модального окна
-     title: 'Вы уверены ?',
-     closable: true,
-     width: '400px',
-     footerButtons: [
-          {
-               text: 'Cancel', type: 'secondary', handler() {
-                    confirmModal.close() // закрытие модального окна
-               }
-          },
-          {
-               text: 'Deleted', type: 'danger', handler() {
-                    confirmModal.close() // закрытие модального окна
-               }
-          }
-     ]
-})
 
 /**
  * Открытие модального окна при клике на data-btn 
@@ -79,9 +61,13 @@ document.addEventListener('click', event => {
           priceModal.open()
           //console.log(id, price)
      } else if (btnType === 'remove') {
-          confirmModal.setContent(`
-               <p>You deleted this price: <strong>${price.title}</strong></p>
-          `)
-          confirmModal.open()
+          $.confirm({
+               title: 'You sure?',
+               content: `<p>You deleted this price: <strong>${price.title}</strong></p>`
+          }).then(() => {
+               console.log('REMOVE')
+          }).catch(() => {
+               console.log('CANCEL')
+          })
      }
 })
