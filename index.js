@@ -4,7 +4,6 @@ let prices = [ // глобальный объект
      { id: 3, title: 'third', price: 40, img: 'https://picsum.photos/seed/picsum/200/300' }
 ]
 
-
 // функция toHTML которая берет параметр price
 // функция toHTML возвращает строку
 // метод toHTML берет объект price и преобразует в строку 
@@ -35,15 +34,14 @@ const priceModal = $modal({
      title: 'Цена на товар',
      closable: true,
      width: '400px',
-     footerButtons: [
-          {
+     footerButtons: [ // передаем опции в footerButtons 
+          {    // параметры кнопки footer 
                text: 'Close', type: 'primary', handler() {
                     priceModal.close() // закрытие модального окна
                }
           }
      ]
 })
-
 
 /**
  * Открытие модального окна при клике на data-btn 
