@@ -15,7 +15,7 @@ const toHTML = price => `
                <div class="card-body">
                     <h5 class="card-title">${price.title}</h5>
                     <a href="#" class="btn btn-primary" data-btn="price" data-id="${price.id}">See price</a>
-                    <a href="#" class="btn btn-danger">Remove price</a>
+                    <a href="#" class="btn btn-danger" data-btn="remove" data-id="${price.id}">Remove price</a>
                </div>
           </div>
      </div>
@@ -44,21 +44,44 @@ const priceModal = $modal({
      ]
 })
 
+const confirmModal = $modal({
+     //параметризация модального окна
+     title: 'Вы уверены ?',
+     closable: true,
+     width: '400px',
+     footerButtons: [
+          {
+               text: 'Cancel', type: 'secondary', handler() {
+                    confirmModal.close() // закрытие модального окна
+               }
+          },
+          {
+               text: 'Deleted', type: 'danger', handler() {
+                    confirmModal.close() // закрытие модального окна
+               }
+          }
+     ]
+})
+
 /**
- * Открытие модального окна при клике на data-btn
+ * Открытие модального окна при клике на data-btn 
  */
 document.addEventListener('click', event => {
      event.preventDefault()
      const btnType = event.target.dataset.btn //получение атрибута data-btn
      const id = +event.target.dataset.id // получение атрибута data-id// +event... преобразуем к числу 
+     const price = prices.find(f => f.id === id)
 
      if (btnType === 'price') {
-          const price = prices.find(f => f.id === id)
-
           priceModal.setContent(`
                <p>Price for ${price.title}: <strong>${price.price}$</strong></p>
           `)
           priceModal.open()
           //console.log(id, price)
+     } else if (btnType === 'remove') {
+          confirmModal.setContent(`
+               <p>You deleted this price: <strong>${price.title}</strong></p>
+          `)
+          confirmModal.open()
      }
 })
