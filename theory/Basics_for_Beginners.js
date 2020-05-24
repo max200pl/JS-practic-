@@ -183,7 +183,6 @@ person.hasWife = true
 console.log(person);
 person.isProgrammer = true
 console.log(person);
-
 //
 
 
