@@ -1,72 +1,27 @@
-// Functions 
+//? Array
 
-//* Function Declaration
-// возможность объвлять переменные до объявления функции
-// greet('Max');
-// function greet(name) {
-// 	console.log('Привет -', name)
-// }
-//* Functions Expression
-// //возможность объвлять переменные только после объвления фукнции 
-// const greet2 = function greet2(name) {
-// 	console.log('Привет -', name);
-// }
-// greet2('Lena');
-// console.log(typeof greet);
-// console.dir(greet) //  функциия являются объектами в js
+const cars = ['Мазда', 'форд', 'БМВ']
+const fib = [1, 2, 3, 4, 6, 14]
 
-// let counter = 0
-//* Anonymous funcion
-// const interval = setInterval(function () {  // setTimeout
-// 	if (counter === 5) {
-// 		 clearInterval(interval)   // clearTimeout
-// 	}else{
-// 		console.log(++counter);
-// 	}
-// }, 1000)
+console.log(cars);
 
-// Arrow function
+// если функция вызывается в контексте объекта, она называется методом 
+// Function:
+function addItemToEnd() {
+   } 
+// // Method:  
+// cars.push("Мустанг")
+// console.log(cars);
+// cars.unshift("Волга")
 
-function greet(name) {
-	console.log('Привет -', name)
-}
+console.log(cars.reverse());
+console.log(cars);
 
-const arrow = (name) => {
-	console.log(name);
-}
-arrow("Max")
+//Задача 1 
+const text = 'Привет, мы изучаем JavaScript'
+const reverseText = text.split('').reverse().join('') // получаем массив
+console.log(reverseText);
 
-const arrow2 = name => console.log('Привет', name);
-arrow2("Max")
 
-const pow2 = num =>{
-	return num ** 2
-}
-console.log(pow2(5));
 
-//* 4 Параметры по умолчанию
-const sum = (a,b = a*2  ) => a+b // b = 1 -- параметр по умолчанию
-console.log(sum(41,4));
 
-function sumAll(...all) { // собирает в массив 
-	console.log(all);
-	let result = 0
-	for (let num of all) {
-		result += num
-	}
-
-	return result
-}
-const res = sumAll(1,2,4)
-console.log(res);
-
-//* 5 Замыкания 
-function creatMember(name){
-	return function (lastName) {
-		console.log(name + lastName);
-	}
-}
-
-const logWidthLastName = creatMember("Max")
-console.log(logWidthLastName);
-console.log(logWidthLastName('Poskannyi'));
