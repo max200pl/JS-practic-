@@ -1,0 +1,5 @@
+extends:
+     - 'airbag-base'
+   env:
+     node: true
+     browser: true
