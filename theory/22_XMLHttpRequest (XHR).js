@@ -1,4 +1,4 @@
-//?  Fetch, XMLHttpRequest (XHR), Ajax
+//? XMLHttpRequest (XHR)
 /**
  ** 1) задача для отправки различных запросов на сервер 
  ** 2) requestURL -->  URL для асинхронных запросов на сервер 
